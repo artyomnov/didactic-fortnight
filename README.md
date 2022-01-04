@@ -1,11 +1,6 @@
-# DEEL BACKEND TASK
 
-  
-
-💫 Welcome! 🎉
-
-
-This backend exercise involves building a Node.js/Express.js app that will serve a REST API. We imagine you should spend around 3 hours at implement this feature.
+## Test Run
+Please use `npm test` or just `jest`. Make sure you have installed all dependencies.
 
 ## Data Models
 
