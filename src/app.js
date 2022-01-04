@@ -141,29 +141,22 @@ app.get('/admin/best-clients', async (req, res) => {
 
     if (!startDate || !endDate) return res.status(400).end('Start date and end date must be set');
 
-    try {
-        const clients = await Profile.findAll({
-            where: {
-                type: 'client',
-                '$Client.Jobs.paid$': true,
-                '$Client.Jobs.paymentDate$': {[Op.between]: [startDate, endDate]},
-            },
-            include: [{ model: Contract, required: true, as: 'Client', include: [{ model: Job }] }],
-            group: ['Profile.id'],
-            order: [
-                [fn('sum', col('Client.Jobs.price')), 'DESC'],
-            ],
-            limit: limit || 2,
-            subQuery: false,
-        });
+    const clients = await Profile.findAll({
+        where: {
+            type: 'client',
+            '$Client.Jobs.paid$': true,
+            '$Client.Jobs.paymentDate$': {[Op.between]: [startDate, endDate]},
+        },
+        include: [{ model: Contract, required: true, as: 'Client', include: [{ model: Job }] }],
+        group: ['Profile.id'],
+        order: [
+          [fn('sum', col('Client.Jobs.price')), 'DESC'],
+        ],
+        limit: limit || 2,
+        subQuery: false,
+    });
 
-        res.json(clients);
-    } catch (e) {
-        console.log(e);
-        res.status(500).end()
-    }
-
-    // res.json(clients);
+    res.json(clients);
 });
 
 module.exports = app;
